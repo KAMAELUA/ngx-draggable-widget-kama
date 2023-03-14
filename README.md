@@ -10,11 +10,13 @@ Ngx Draggable Widget Kama is a re-worked Ngx Draggable Widget for better [Angula
 Original Ngx Draggable Widget is a **_drag & drop , resize , cascade , overlap_** capable __"[ngWidgetContainer]"__ and __"[ngWidget]"__ structural directive component library for [Angular 4](https://devdocs.io/angular~4/).
 The demo included in this repo follows the [Angular CLI based quick start](https://cli.angular.io/)
 
-Check the live example at [Ngx Draggable Widget Demo with dynamic configuration](http://draggablewidgets.alanaamy.net/)
+[//]: # (Check the live example at [Ngx Draggable Widget Demo with dynamic configuration]&#40;http://draggablewidgets.alanaamy.net/&#41;)
 
-Or Check another live working example [Draggable Dashboard](http://draggabledashboard.alanaamy.net) which is a working typescript angular cli example project located at [draggable dashboard folder in the source](https://github.com/arup-banerjee/ngx-draggable-widget/tree/master/draggable-dashboard) using ngx-draggable-widget
+[//]: # ()
+[//]: # (Or Check another live working example [Draggable Dashboard]&#40;http://draggabledashboard.alanaamy.net&#41; which is a working typescript angular cli example project located at [draggable dashboard folder in the source]&#40;https://github.com/arup-banerjee/ngx-draggable-widget/tree/master/draggable-dashboard&#41; using ngx-draggable-widget)
 
-#### Setup
+### Setup
+
 ----------
 
 To use the Ngx Draggable Widget Kama, simply run `npm install ngx-draggable-widget-kama` and then include the `NgDraggableWidgetModule` in your project module imports (see Example for more details).
@@ -30,31 +32,35 @@ This will give you a fully compiled version of the demo that you can run using t
 
 `ng serve` will compile the demo and watch for any changes.
 
-NOTE: By default Angular 4 and System.js are not listed as actual dependencies, but as peer dependencies, so that npm doesn't install them on systems that just require the install file. If they are not installed, this could cause `ng serve` or `ng build` to fail. To fix this, run `npm install angular systemjs` and rerun the build command.
+NOTE: By default Angular and System.js are not listed as actual dependencies, but as peer dependencies, so that npm doesn't install them on systems that just require the install file. If they are not installed, this could cause `ng serve` or `ng build` to fail. To fix this, run `npm install angular systemjs` and rerun the build command.
 
 ## Angular cli projects and styles
 If you are already using a cli project or creating a new cli project, you may find useful to add the NgDraggableWidget.css to the styles in .angular-cli.json. 
-```javascript
-        "styles": [
-            "../node_modules/ngx-draggable-widget-kama/NgDraggableWidget.css"
-        ],
+```json
+...
+"styles": [
+    "../node_modules/ngx-draggable-widget-kama/NgDraggableWidget.css"
+],
+...
 ```
 You can change the widget-container background-color for default to whichever suits you in your suitable scss , css file for example in style.scss or app.component.scss .. or wherever logical suits your need
 like below
-```javascript
+```css
 .widget-container {
     background-color: #282828;
 } 
 ```
 
-#### Config
+### Config
+
 -----------
 
 To use this in your own application, all you need to do is add the **`[ngWidgetContainer]`** attribute to your container element and **`[ngWidget]`** to each item. You can use this in conjunction with `NgFor` and or `ngSwitch` to create a truly dynamic Angular 4 dashboard of widgets.
 
 To configure the widget container with your own options, it is as easy as adding them as the attribute value. The defaults for the widget container are:
 
-#### Widget Container Defaults
+### Widget Container Defaults
+
 |Property|Deafult|Description|
 |:-------|:------|:----------|
 |margins|10|The size of the margins of each widget item. Supports up to four values in the same way as CSS margins. Can be updated using setMargins()
@@ -83,7 +89,7 @@ To configure the widget container with your own options, it is as easy as adding
 |widget_height_factor|22|number of pixels that defines a logical user defined height. By default this is not set.However if this is set then unity in the respective widget will be used to set the initial size of the the widget height and override sizey of the widget. Note this is only meaningful to the widgets if they specifically have unity defined. Else this value has no effect
 |debug|false|Enables debug logging into console for the widget container
 
-#### The defaults for the widget item are:
+### The defaults for the widget item are:
 
 |Property|Default|Description|
 |:-------|:-----|:---------|
@@ -108,7 +114,8 @@ To configure the widget container with your own options, it is as easy as adding
 |unity|0|The unity defines the initial logical height of the widget. The actual height in pixels is the multiple of this logical unit with the corresponding widget_height_factor
 |debug|false|Enables debug logging into console for the current widget
 
-#### Event Handling
+### Event Handling
+
 -------------------
 
 Both the `NgWidgetContainer` and `NgWidget` throw events when an item is moved or resized. The grid has the following:
@@ -157,7 +164,8 @@ interface NgWidgetEvent {
 }
 ```
 
-#### Styling
+### Styling
+
 ------------
 
 There are three elements that can be styled with ngx-draggable-widget-kama, the container itself `.widget-container`, the items `.widget` and the placeholder `.widget-placeholder`. The demo includes some basic styling in NgWidgetContainer.css which you can include in your app's `styleUrls` property. It also includes some @media queries styles to handle responsiveness on smaller screens. This simple force the boxes to full width and puts them inline in their original order. This is optional functionality and does not need to be included. In order for correct functionality, the required styles are added by the classes themselves at run-time:
@@ -184,7 +192,8 @@ You can prevent these styles being automatically added by setting the value of `
 
 NOTE: The widget container sets the values `width, height, left, top` in CSS to move and resize the elements. This cannot be disabled.
 
-#### Example
+### Example
+
 ------------
 
 The **`NgDraggableContainer`** and **`NgWidget`** can be configured by binding directly to the directive. The `NgWidget` supports two-way binding so you don't need to bind to any of the above events. The `NgWidgetChange` event emits under the same conditions as `onChangeStop`. The only config values that will change are `col`, `row`, `sizex` and `sizey`; the rest of your configuration will persist. You can then use these values for serialization of the grid. By binding the configuration this way, you are able to update the values on the fly. Here is an example template of the grid with two-way item bindings:
