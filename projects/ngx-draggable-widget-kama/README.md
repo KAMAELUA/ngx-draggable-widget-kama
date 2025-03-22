@@ -1,7 +1,7 @@
-[![GitHub version](https//img.shields.io/github/release/KAMAELUA%2Fngx-draggable-widget-kama.svg)](https://github.com/KAMAELUA/ngx-draggable-widget)
-[![npm version](https//img.shields.io/npm/v/ngx-draggable-widget-kama.svg)](https://www.npmjs.com/package/ngx-draggable-widget-kama)
-[![license](https//img.shields.io/github/license/KAMAELUA%2Fngx-draggable-widget-kama.svg)](https://github.com/KAMAELUA/ngx-draggable-widget/blob/master/LICENSE)
-[![open issues](https//img.shields.io/github/issues/KAMAELUA%2Fngx-draggable-widget-kama.svg)](https://github.com/KAMAELUA/ngx-draggable-widget/issues)
+[![GitHub version](https://img.shields.io/github/release/KAMAELUA%2Fngx-draggable-widget-kama)](https://github.com/KAMAELUA/ngx-draggable-widget)
+[![NPM Version](https://img.shields.io/npm/v/ngx-draggable-widget-kama)](https://www.npmjs.com/package/ngx-draggable-widget-kama)
+[![license](https://img.shields.io/github/license/KAMAELUA%2Fngx-draggable-widget-kama)](https://github.com/KAMAELUA/ngx-draggable-widget/blob/master/LICENSE)
+[![open issues](https://img.shields.io/github/issues/KAMAELUA%2Fngx-draggable-widget-kama)](https://github.com/KAMAELUA/ngx-draggable-widget/issues)
 
 # Ngx Draggable Widget Kama
 Ngx Draggable Widget Kama is a re-worked Ngx Draggable Widget for better [Angular](http://angular.io) support.
@@ -14,6 +14,7 @@ The demo included in this repo follows the [Angular CLI based quick start](https
 
 | Angular          | Widget  |
 |------------------|:-------:|
+| >=16.0.0 <17.0.0 | v1.2.0  |
 | >=15.0.0 <16.0.0 | v1.1.0  |
 | >=10.0.0 <15.0.0 | v1.0.21 |
 | >=8.0.0 <10.0.0  | v1.0.13 |
@@ -229,12 +230,12 @@ to your typescript imports, and ensuring that your `@NgModule` annotation looks 
 
 ```typescript
 @NgModule({
+  ...,
+  imports: [
     ...,
-    imports: [
-        ...,
-        NgDraggableWidgetModule,
-        ...
-    ],
-    ...
+  NgDraggableWidgetModule,
+  ...
+],
+...
 })
 ```
