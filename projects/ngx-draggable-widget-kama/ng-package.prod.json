@@ -3,10 +3,11 @@
   "dest": "../../dist/ngx-draggable-widget-kama",
   "lib": {
     "entryFile": "src/public_api.ts",
-    "styleIncludePaths": ["src/NgDraggableWidget.css"]
+    "styleIncludePaths": ["./styles/NgDraggableWidget.scss"]
   },
   "assets": [
     "README.md",
-    "./styles/**/*.theme.scss"
+    "styles/**/*.css",
+    "styles/**/*.scss"
   ]
 }

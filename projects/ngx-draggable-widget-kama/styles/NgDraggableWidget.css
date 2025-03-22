@@ -1,0 +1,44 @@
+.widget-container {
+  background-color: #282828;
+  transform-origin: top center;
+  transition: transform 0.5s;
+}
+
+.widget {
+  background-color: #282828;
+  -webkit-transition: width 0.25s, height 0.25s, transform 0.5s;
+  -moz-transition: width 0.25s, height 0.25s, transform 0.5s;
+  -o-transition: width 0.25s, height 0.25s, transform 0.5s;
+  transition: width 0.25s, height 0.25s, transform 0.5s;
+  overflow: hidden;
+}
+
+.widget:active,
+.widget.moving {
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  transition: none;
+  opacity: 0.7
+}
+
+.widget-placeholder {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 767px) {
+  .widget-container {
+    width: 100% !important;
+    height: auto !important;
+    padding: 10px;
+  }
+  .widget {
+    position: static !important;
+    width: 100% !important;
+    margin-bottom: 10px;
+    transform: none !important;
+  }
+  .widget:last-child {
+    margin-bottom: 0;
+  }
+}
