@@ -10,11 +10,6 @@ Ngx Draggable Widget Kama is a re-worked Ngx Draggable Widget for better [Angula
 Original Ngx Draggable Widget is a **_drag & drop , resize , cascade , overlap_** capable __"[ngWidgetContainer]"__ and __"[ngWidget]"__ structural directive component library for [Angular 4](https://devdocs.io/angular~4/).
 The demo included in this repo follows the [Angular CLI based quick start](https://cli.angular.io/)
 
-[//]: # (Check the live example at [Ngx Draggable Widget Demo with dynamic configuration]&#40;http://draggablewidgets.alanaamy.net/&#41;)
-
-[//]: # ()
-[//]: # (Or Check another live working example [Draggable Dashboard]&#40;http://draggabledashboard.alanaamy.net&#41; which is a working typescript angular cli example project located at [draggable dashboard folder in the source]&#40;https://github.com/arup-banerjee/ngx-draggable-widget/tree/master/draggable-dashboard&#41; using ngx-draggable-widget)
-
 ### Setup
 
 ----------
@@ -32,7 +27,6 @@ This will give you a fully compiled version of the demo that you can run using t
 
 `ng serve` will compile the demo and watch for any changes.
 
-NOTE: By default Angular and System.js are not listed as actual dependencies, but as peer dependencies, so that npm doesn't install them on systems that just require the install file. If they are not installed, this could cause `ng serve` or `ng build` to fail. To fix this, run `npm install angular systemjs` and rerun the build command.
 
 ## Angular cli projects and styles
 If you are already using a cli project or creating a new cli project, you may find useful to add the NgDraggableWidget.css to the styles in angular.json. 
@@ -158,7 +152,7 @@ onItemChange()    //  When either the item's grid size or position is changed.
 
 Each event will also provide the following object to any callback functions:
 
-```javascript
+```typescript
 interface NgWidgetEvent {
     payload: any,   //  The item's optional custom payload (string/number/object) to be used to identify the item for serialization
     col: number,    //  The item's column position within the grid
