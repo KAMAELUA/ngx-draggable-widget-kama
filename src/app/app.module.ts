@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {NgDraggableWidgetModule} from 'ngx-draggable-widget-kama';
+import {NgDraggableWidgetModule} from '../../projects/ngx-draggable-widget-kama/src/public_api';
 
 @NgModule({
   declarations: [

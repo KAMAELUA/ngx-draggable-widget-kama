@@ -1,7 +1,7 @@
-[![GitHub version](http://img.shields.io/github/release/KAMAELUA%2Fngx-draggable-widget-kama.svg)](https://github.com/KAMAELUA/ngx-draggable-widget) 
-[![npm version](http://img.shields.io/npm/v/ngx-draggable-widget-kama.svg)](https://www.npmjs.com/package/ngx-draggable-widget-kama) 
-[![license](http://img.shields.io/github/license/KAMAELUA%2Fngx-draggable-widget-kama.svg)](https://github.com/KAMAELUA/ngx-draggable-widget/blob/master/LICENSE) 
-[![open issues](http://img.shields.io/github/issues/KAMAELUA%2Fngx-draggable-widget-kama.svg)](https://github.com/KAMAELUA/ngx-draggable-widget/issues) 
+[![GitHub version](https//img.shields.io/github/release/KAMAELUA%2Fngx-draggable-widget-kama.svg)](https://github.com/KAMAELUA/ngx-draggable-widget) 
+[![npm version](https//img.shields.io/npm/v/ngx-draggable-widget-kama.svg)](https://www.npmjs.com/package/ngx-draggable-widget-kama) 
+[![license](https//img.shields.io/github/license/KAMAELUA%2Fngx-draggable-widget-kama.svg)](https://github.com/KAMAELUA/ngx-draggable-widget/blob/master/LICENSE) 
+[![open issues](https//img.shields.io/github/issues/KAMAELUA%2Fngx-draggable-widget-kama.svg)](https://github.com/KAMAELUA/ngx-draggable-widget/issues) 
 
 # Ngx Draggable Widget Kama
 Ngx Draggable Widget Kama is a re-worked Ngx Draggable Widget for better [Angular](http://angular.io) support. 
@@ -10,7 +10,17 @@ Ngx Draggable Widget Kama is a re-worked Ngx Draggable Widget for better [Angula
 Original Ngx Draggable Widget is a **_drag & drop , resize , cascade , overlap_** capable __"[ngWidgetContainer]"__ and __"[ngWidget]"__ structural directive component library for [Angular 4](https://devdocs.io/angular~4/).
 The demo included in this repo follows the [Angular CLI based quick start](https://cli.angular.io/)
 
-### Setup
+## Versions
+
+| Angular          | Widget  |
+|------------------|:-------:|
+| >=15.0.0 <16.0.0 | v1.1.0  |
+| >=10.0.0 <15.0.0 | v1.0.21 |
+| >=8.0.0 <10.0.0  | v1.0.13 |
+| >=7.0.0 <8.0.0   | v1.0.10 |
+| >=6.0.0 <7.0.0   | v1.0.8  |
+
+## Setup
 
 ----------
 
@@ -28,7 +38,7 @@ This will give you a fully compiled version of the demo that you can run using t
 `ng serve` will compile the demo and watch for any changes.
 
 
-## Angular cli projects and styles
+### Angular cli projects and styles
 If you are already using a cli project or creating a new cli project, you may find useful to add the NgDraggableWidget.css to the styles in angular.json. 
 ```json
 ...
@@ -194,7 +204,7 @@ You can prevent these styles being automatically added by setting the value of `
 
 NOTE: The widget container sets the values `width, height, left, top` in CSS to move and resize the elements. This cannot be disabled.
 
-### Example
+## Example
 
 ------------
 

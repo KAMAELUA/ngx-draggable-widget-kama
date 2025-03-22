@@ -1,20 +1,23 @@
-<div [ngWidgetContainer]="WIDGET_CONTAINER_FORMATINGS" style="background-color: rgba(255,255,255, 0.3)">
+<div class="widget-container" [ngWidgetContainer]="WIDGET_CONTAINER_FORMATINGS">
   <div *ngFor="let widget of widgets; let i = index"
        [(ngWidget)]="widget.config">
-    <div class="widget-box {{widget.component}}">
+    <div class="widget-box">
       <div class="widget-header">
-        <h3>{{widget.title}} {{widget.component}}</h3>
-        <div class="widget-controls" >
-          <!--div class="widget-settings" *ngIf="widget.component !== 'app-info-board'"><i class="fa fa-cog"></i></div-->
-          <div class="widget-zoom" *ngIf="!widget.maximise">
-            <i class="fa fa-expand"></i>
-          </div>
-          <div class="widget-zoom" *ngIf="widget.maximise">
-            <i class="fa fa-compress"></i>
-          </div>
-        </div>
+        <h3>{{ widget.title }}</h3>
       </div>
-      test
+      <div class="widget-body">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra varius ex, sed efficitur mi varius sed.
+        Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla et posuere
+        turpis. Mauris nec pulvinar massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+        turpis egestas. Nulla facilisi. Aliquam ornare sit amet tortor sit amet varius. Vivamus et bibendum nunc.
+        Suspendisse potenti. Cras molestie tempus tortor a rutrum. Fusce pellentesque nisl et mattis egestas.
+
+        Aliquam aliquam, augue vitae egestas sodales, velit neque venenatis sapien, a varius sem lacus sit amet lectus.
+        Curabitur euismod iaculis accumsan. Suspendisse id elementum lorem, in auctor est. Nam ut eleifend odio, eu
+        volutpat nibh. Sed ac scelerisque metus. Morbi sed imperdiet dui. Suspendisse tincidunt turpis mauris, vehicula
+        venenatis odio molestie eleifend. Nullam id lobortis ex, nec pellentesque est. Cras blandit feugiat purus, eu
+        ornare quam tincidunt quis. Maecenas sit amet tellus arcu.
+      </div>
     </div>
   </div>
 </div>
