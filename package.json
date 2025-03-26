@@ -12,7 +12,7 @@
     "build-lib": "ng build ngx-draggable-widget-kama --configuration production",
     "npm-pack": "cd dist/ngx-draggable-widget-kama && npm pack",
     "package": "npm run build-lib && npm run npm-pack",
-    "copy": "copyfiles -u 3 projects/ngx-draggable-widget-kama/src/NgDraggableWidget.css dist/ngx-draggable-widget-kama",
+    "copy": "copyfiles -u 3 projects/ngx-draggable-widget-kama/styles/NgDraggableWidget.css dist/ngx-draggable-widget-kama",
     "semantic-release": "semantic-release --debug",
     "commit": "git-cz"
   },
@@ -77,10 +77,10 @@
       "master"
     ],
     "publish": {
-      "pkgRoot": "projects/ngx-draggable-widget-kama"
+      "pkgRoot": "dist/ngx-draggable-widget-kama"
     },
     "prepare": {
-      "pkgRoot": "projects/ngx-draggable-widget-kama"
+      "pkgRoot": "dist/ngx-draggable-widget-kama"
     },
     "commit-analyzer": {
       "preset": "angular",
