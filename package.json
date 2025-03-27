@@ -73,9 +73,6 @@
     }
   },
   "release": {
-    "branches": [
-      "master"
-    ],
     "publish": {
       "pkgRoot": "dist/ngx-draggable-widget-kama"
     },
