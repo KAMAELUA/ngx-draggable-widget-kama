@@ -366,8 +366,10 @@ export class NgWidget implements OnInit, OnDestroy, DoCheck, INgWidget {
     }
 
     public setConfig(config: INgWidgetConfig): void {
-        this._config = { ...NgWidget.CONST_DEFAULT_CONFIG, ...config };
-        this.debugLog(config, this._config);
+        if (config.debug) {
+            this.debugLog('setConfig', config);
+        }
+        this._config = config;
 
         this._payload = config.payload;
         this._currentPosition.col = config.col || NgWidget.CONST_DEFAULT_CONFIG.col;

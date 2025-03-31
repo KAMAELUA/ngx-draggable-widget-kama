@@ -9,7 +9,10 @@ import {
     OnDestroy,
     DoCheck,
     ViewContainerRef,
-    Output, HostListener, Renderer2
+    Output,
+    HostListener,
+    Renderer2,
+    Input,
 } from '@angular/core';
 import {
     INgWidgetEvent,
@@ -21,12 +24,17 @@ import {
 } from '../interfaces/INgDraggableWidgetConfig';
 import {NgWidgetPlaceholder} from '../components/NgWidgetPlaceholder';
 
+/**
+ * Directive for managing a container of draggable and resizable widgets.
+ * Provides functionality for grid-based positioning, resizing, and cascading behavior.
+ */
 @Directive({
     selector: '[ngWidgetContainer]',
-    inputs: ['config: ngWidgetContainer'],
 })
 export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetContainer {
-    // 	default config
+    /**
+     * Default configuration for the widget container.
+     */
     private static CONST_DEFAULT_CONFIG: INgWidgetContainerConfig = {
         margins: [10],
         draggable: true,
@@ -52,16 +60,43 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         debug: false
     };
 
-    // 	event Emitters
+    // Event Emitters
+    /**
+     * Emits when a widget drag starts.
+     */
     @Output() public onDragStart: EventEmitter<INgWidget> = new EventEmitter<INgWidget>();
+
+    /**
+     * Emits during a widget drag.
+     */
     @Output() public onDrag: EventEmitter<INgWidget> = new EventEmitter<INgWidget>();
+
+    /**
+     * Emits when a widget drag stops.
+     */
     @Output() public onDragStop: EventEmitter<INgWidget> = new EventEmitter<INgWidget>();
+
+    /**
+     * Emits when a widget resize starts.
+     */
     @Output() public onResizeStart: EventEmitter<INgWidget> = new EventEmitter<INgWidget>();
+
+    /**
+     * Emits during a widget resize.
+     */
     @Output() public onResize: EventEmitter<INgWidget> = new EventEmitter<INgWidget>();
+
+    /**
+     * Emits when a widget resize stops.
+     */
     @Output() public onResizeStop: EventEmitter<INgWidget> = new EventEmitter<INgWidget>();
+
+    /**
+     * Emits when the position or size of any widget changes.
+     */
     @Output() public onItemChange: EventEmitter<Array<INgWidgetEvent>> = new EventEmitter<Array<INgWidgetEvent>>();
 
-    // 	public variables
+    // Public variables
     public colWidth = 250;
     public rowHeight = 250;
     public minCols = 1;
@@ -83,7 +118,7 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     public widget_width_factor = 0;
     public widget_height_factor = 0;
 
-    // 	private variables
+    // Private variables
     private _items: Array<INgWidget> = [];
     private _draggingItem: INgWidget | null = null;
     private _resizingItem: INgWidget | null = null;
@@ -116,13 +151,22 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
 
     private _config = NgWidgetContainer.CONST_DEFAULT_CONFIG;
 
+    /**
+     * Logs debug messages if debug mode is enabled.
+     * @param message The debug message.
+     * @param optionalParams Additional parameters to log.
+     */
     private debugLog(message: string, ...optionalParams: any[]): void {
         if (this._config.debug) {
             console.log(message, ...optionalParams);
         }
     }
 
-    // 	[ng-widget-container] attribute handler
+    /**
+     * Sets the configuration for the widget container.
+     * @param v The configuration object.
+     */
+    @Input("ngWidgetContainer")
     set config(v: INgWidgetContainerConfig) {
         this.setConfig(v);
 
@@ -131,14 +175,22 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         }
     }
 
-    // 	constructor
+    /**
+     * Constructor for the NgWidgetContainer directive.
+     * @param _differs KeyValueDiffers for detecting changes in configuration.
+     * @param _ngEl ElementRef for accessing the container element.
+     * @param _renderer2 Renderer2 for DOM manipulation.
+     * @param _containerRef ViewContainerRef for managing child components.
+     */
     constructor(private _differs: KeyValueDiffers,
                 private _ngEl: ElementRef,
                 private _renderer2: Renderer2,
                 private _containerRef: ViewContainerRef) {
     }
 
-    // 	public methods
+    /**
+     * Lifecycle hook that is called after data-bound properties are initialized.
+     */
     public ngOnInit(): void {
         this._renderer2.addClass(this._ngEl.nativeElement, 'widget-container');
         if (this.autoStyle) {
@@ -147,16 +199,41 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         this.setConfig(this._config);
     }
 
+    /**
+     * Lifecycle hook that is called when the directive is destroyed.
+     */
     public ngOnDestroy(): void {
-        this._destroyed = true;
+        this.onDragStart.unsubscribe();
+        this.onDrag.unsubscribe();
+        this.onDragStop.unsubscribe();
+        this.onResizeStart.unsubscribe();
+        this.onResize.unsubscribe();
+        this.onResizeStop.unsubscribe();
+        this.onItemChange.unsubscribe();
+
+        this.onDragStart.complete();
+        this.onDrag.complete();
+        this.onDragStop.complete();
+        this.onResizeStart.complete();
+        this.onResize.complete();
+        this.onResizeStop.complete();
+        this.onItemChange.complete();
     }
 
+    /**
+     * Gets the current configuration of the widget container.
+     * @returns The configuration object.
+     */
     public getConfig(): INgWidgetContainerConfig {
         return this._config;
     }
 
+    /**
+     * Sets the configuration for the widget container.
+     * @param config The configuration object.
+     */
     public setConfig(config: INgWidgetContainerConfig): void {
-        this._config = { ...this._config, ...config }; // Merge with existing config
+        this._config = config;
 
         let maxColRowChanged = false;
         for (const x in config) {
@@ -320,14 +397,28 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         this._updateSize();
     }
 
+    /**
+     * Gets the position of a widget by its index.
+     * @param index The index of the widget.
+     * @returns The position of the widget.
+     */
     public getItemPosition(index: number): INgWidgetPosition {
         return this._items[index].getWidgetPosition();
     }
 
+    /**
+     * Gets the size of a widget by its index.
+     * @param index The index of the widget.
+     * @returns The size of the widget.
+     */
     public getItemSize(index: number): INgWidgetSize {
         return this._items[index].getSize();
     }
 
+    /**
+     * Lifecycle hook that is called during every change detection run.
+     * @returns True if changes were detected, otherwise false.
+     */
     public ngDoCheck(): boolean {
         if (this._differ != null) {
             const changes = this._differ.diff(this._config);
@@ -343,6 +434,10 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         return false;
     }
 
+    /**
+     * Sets the margins for the widget container.
+     * @param margins An array of margin values.
+     */
     public setMargins(margins: Array<string>): void {
         this.marginTop = Math.max(parseInt(margins[0], 10), 0);
         this.marginRight = margins.length >= 2 ? Math.max(parseInt(margins[1], 10), 0) : this.marginTop;
