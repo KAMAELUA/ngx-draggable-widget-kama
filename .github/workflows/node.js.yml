@@ -48,7 +48,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - uses: nearform-actions/github-action-copy-files
+      - name: Copy README.md file to package directory
+        uses: nearform-actions/github-action-copy-files@master
         with:
           source: 'README.md'
           destination: './projects/ngx-draggable-widget-kama/'
