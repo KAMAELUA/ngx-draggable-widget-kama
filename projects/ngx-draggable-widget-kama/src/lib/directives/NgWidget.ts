@@ -1,5 +1,3 @@
-// tslint:disable:max-line-length
-// tslint:disable:quotemark
 import {
     INgWidgetConfig,
     INgWidgetEvent,
@@ -247,7 +245,6 @@ export class NgWidget implements OnInit, OnDestroy, DoCheck, INgWidget {
         return true;
     }
 
-    // tslint:disable:curly
     public findHandle(handleSelector: string, startElement: HTMLElement): boolean {
         try {
             let targetElem: any = startElement;
@@ -259,7 +256,7 @@ export class NgWidget implements OnInit, OnDestroy, DoCheck, INgWidget {
 
                 targetElem = targetElem.parentElement;
             }
-            // tslint:disable-next-line:no-empty
+
         } catch (err) {
         }
 

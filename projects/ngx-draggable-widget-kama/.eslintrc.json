@@ -1,0 +1,80 @@
+{
+  "root": true,
+  "extends": "../../.eslintrc.json",
+  "ignorePatterns": [
+    "!**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "projects/ngx-draggable-widget-kama/tsconfig.(lib|spec).json"
+        ],
+        "createDefaultProgram": true
+      },
+      "rules": {
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "lib",
+            "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "lib",
+            "style": "camelCase"
+          }
+        ],
+        "@typescript-eslint/consistent-type-definitions": "error",
+        "@typescript-eslint/dot-notation": "off",
+        "@typescript-eslint/explicit-member-accessibility": [
+          "off",
+          {
+            "accessibility": "explicit"
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "variable",
+            "format": [
+              "camelCase",
+              "UPPER_CASE"
+            ],
+            "leadingUnderscore": "forbid",
+            "trailingUnderscore": "forbid"
+          }
+        ],
+        "@typescript-eslint/no-use-before-define": "error",
+        "brace-style": [
+          "error",
+          "1tbs"
+        ],
+        "dot-notation": "off",
+        "id-denylist": "off",
+        "id-match": "off",
+        "indent": "off",
+        "no-empty-function": "off",
+        "no-shadow": "off",
+        "no-underscore-dangle": "off",
+        "no-unused-expressions": "off",
+        "no-use-before-define": "off",
+        "semi": "off",
+        "max-len": "off"
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "rules": {}
+    }
+  ]
+}

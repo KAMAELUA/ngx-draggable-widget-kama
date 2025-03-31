@@ -1,5 +1,3 @@
-// tslint:disable:max-line-length
-// tslint:disable:quotemark
 import {INgWidgetContainer, INgWidgetPlaceholder, INgWidgetPosition, INgWidgetSize} from '../interfaces/INgDraggableWidgetConfig';
 import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 
@@ -15,8 +13,6 @@ export class NgWidgetPlaceholder implements OnInit, INgWidgetPlaceholder {
 
     constructor(private _ngEl: ElementRef, private _renderer2: Renderer2) { }
 
-    // tslint:disable:typedef
-    // tslint:disable:curly
     public registerGrid(ngGrid: INgWidgetContainer) {
         this._ngWidgetContainer = ngGrid;
     }
@@ -24,7 +20,7 @@ export class NgWidgetPlaceholder implements OnInit, INgWidgetPlaceholder {
     public ngOnInit(): void {
         this._renderer2.addClass(this._ngEl.nativeElement, 'widget-placeholder');
         // this._renderer.setElementClass(this._ngEl.nativeElement, 'widget-placeholder', true);
-        if (this._ngWidgetContainer.autoStyle) this._renderer2.setStyle(this._ngEl.nativeElement, 'position', 'absolute');
+        if (this._ngWidgetContainer.autoStyle) { this._renderer2.setStyle(this._ngEl.nativeElement, 'position', 'absolute'); }
             // this._renderer.setElementStyle(this._ngEl.nativeElement, 'position', 'absolute');
     }
 

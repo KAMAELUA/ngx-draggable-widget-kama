@@ -1,5 +1,3 @@
-// tslint:disable:max-line-length
-// tslint:disable:quotemark
 import {
     Directive,
     ElementRef,
@@ -1420,7 +1418,6 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     }
 
     private _filterGrid(): void {
-        // tslint:disable:forin
         for (const y in this._itemGrid) {
             for (const x in this._itemGrid[y]) {
                 const item: INgWidget = this._itemGrid[y][x];
