@@ -90,13 +90,7 @@
       "pkgRoot": "dist/ngx-draggable-widget-kama"
     },
     "commit-analyzer": {
-      "preset": "angular",
-      "releaseRules": [
-        {
-          "type": "ci",
-          "release": "patch"
-        }
-      ]
+      "preset": "angular"
     }
   }
 }
