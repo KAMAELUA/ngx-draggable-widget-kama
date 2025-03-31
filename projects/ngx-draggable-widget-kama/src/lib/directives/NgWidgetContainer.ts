@@ -2,7 +2,6 @@ import {
     Directive,
     ElementRef,
     EventEmitter,
-    ComponentFactoryResolver,
     ComponentRef,
     KeyValueDiffer,
     KeyValueDiffers,
@@ -86,9 +85,9 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
 
     // 	private variables
     private _items: Array<INgWidget> = [];
-    private _draggingItem: INgWidget = null;
-    private _resizingItem: INgWidget = null;
-    private _resizeDirection: string = null;
+    private _draggingItem: INgWidget | null = null;
+    private _resizingItem: INgWidget | null = null;
+    private _resizeDirection: string | null = null;
     private _itemGrid: { [key: number]: { [key: number]: INgWidget } } = {}; // { 1: { 1: null } };
     private _containerWidth: number;
     private _containerHeight: number;
@@ -98,12 +97,12 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     private _visibleRows = 0;
     private _setWidth = 250;
     private _setHeight = 250;
-    private _posOffset: INgWidgetContainerRawPosition = null;
+    private _posOffset: INgWidgetContainerRawPosition | null = null;
     private _adding = false;
-    private _placeholderRef: ComponentRef<INgWidgetPlaceholder> = null;
+    private _placeholderRef: ComponentRef<INgWidgetPlaceholder> | null = null;
     private _fixToGrid = false;
     private _autoResize = false;
-    private _differ: KeyValueDiffer<String, any>;
+    private _differ: KeyValueDiffer<string, any> | null = null;
     private _destroyed = false;
     private _maintainRatio = false;
     private _aspectRatio: number;
@@ -115,8 +114,13 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     private _dragReady = false;
     private _resizeReady = false;
 
-
     private _config = NgWidgetContainer.CONST_DEFAULT_CONFIG;
+
+    private debugLog(message: string, ...optionalParams: any[]): void {
+        if (this._config.debug) {
+            console.log(message, ...optionalParams);
+        }
+    }
 
     // 	[ng-widget-container] attribute handler
     set config(v: INgWidgetContainerConfig) {
@@ -130,7 +134,6 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     // 	constructor
     constructor(private _differs: KeyValueDiffers,
                 private _ngEl: ElementRef,
-                private componentFactoryResolver: ComponentFactoryResolver,
                 private _renderer2: Renderer2,
                 private _containerRef: ViewContainerRef) {
     }
@@ -138,10 +141,8 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     // 	public methods
     public ngOnInit(): void {
         this._renderer2.addClass(this._ngEl.nativeElement, 'widget-container');
-        // this._renderer.setElementClass(this._ngEl.nativeElement, 'widget-container', true);
         if (this.autoStyle) {
             this._renderer2.setStyle(this._ngEl.nativeElement, 'position', 'relative');
-            // this._renderer.setElementStyle(this._ngEl.nativeElement, 'position', 'relative');
         }
         this.setConfig(this._config);
     }
@@ -155,7 +156,7 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     }
 
     public setConfig(config: INgWidgetContainerConfig): void {
-        this._config = config;
+        this._config = { ...this._config, ...config }; // Merge with existing config
 
         let maxColRowChanged = false;
         for (const x in config) {
@@ -174,16 +175,16 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
                         this.rowHeight = Math.max(intVal, 1);
                         break;
                     case 'auto_style':
-                        this.autoStyle = val ? true : false;
+                        this.autoStyle = !!val;
                         break;
                     case 'auto_resize':
-                        this._autoResize = val ? true : false;
+                        this._autoResize = !!val;
                         break;
                     case 'draggable':
-                        this.dragEnable = val ? true : false;
+                        this.dragEnable = !!val;
                         break;
                     case 'resizable':
-                        this.resizeEnable = val ? true : false;
+                        this.resizeEnable = !!val;
                         break;
                     case 'max_rows':
                         maxColRowChanged = maxColRowChanged || this._maxRows !== intVal;
@@ -212,7 +213,7 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
                         this.minWidth = Math.max(intVal, 1);
                         break;
                     case 'zoom_on_drag':
-                        this._zoomOnDrag = val ? true : false;
+                        this._zoomOnDrag = !!val;
                         break;
                     case 'cascade':
                         if (this.cascade !== val) {
@@ -221,13 +222,13 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
                         }
                         break;
                     case 'fix_to_grid':
-                        this._fixToGrid = val ? true : false;
+                        this._fixToGrid = !!val;
                         break;
                     case 'maintain_ratio':
-                        this._maintainRatio = val ? true : false;
+                        this._maintainRatio = !!val;
                         break;
                     case 'prefer_new':
-                        this._preferNew = val ? true : false;
+                        this._preferNew = !!val;
                         break;
                     case 'limit_to_screen':
                         this._limitToScreen = !this._autoResize && !!val;
@@ -237,7 +238,7 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
                         }
                         break;
                     case 'allow_overlap':
-                        this.allowOverlap = val ? true : false;
+                        this.allowOverlap = !!val;
                         break;
                     case 'widget_width_factor':
                         this.widget_width_factor = Math.max(intVal, 0);
@@ -332,9 +333,7 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
             const changes = this._differ.diff(this._config);
 
             if (changes != null) {
-                if (this._config.debug) {
-                    console.log('ngDoCheck -> NgWidgetContainer');
-                }
+                this.debugLog('ngDoCheck -> NgWidgetContainer');
                 this._applyChanges(changes);
 
                 return true;
@@ -628,10 +627,7 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
                 const itemPos = item.getPosition();
                 const pOffset = {'left': (mousePos.left - itemPos.left), 'top': (mousePos.top - itemPos.top)};
                 item.setWidgetDragStartPosition(item.getWidgetPosition());
-                if (this._config.debug) {
-                    console.log('_dragStart -> dragStartPosition', item.getWidgetDragStartPosition());
-                }
-
+                this.debugLog('_dragStart -> dragStartPosition', item.getWidgetDragStartPosition());
 
                 item.startMoving();
                 this._draggingItem = item;
@@ -653,19 +649,15 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
 
     private _zoomOut(): void {
         this._renderer2.setStyle(this._ngEl.nativeElement, 'transform', 'scale(0.5, 0.5)');
-        // this._renderer.setElementStyle(this._ngEl.nativeElement, 'transform', 'scale(0.5, 0.5)');
     }
 
     private _resetZoom(): void {
         this._renderer2.setStyle(this._ngEl.nativeElement, 'transform', '');
-        // this._renderer.setElementStyle(this._ngEl.nativeElement, 'transform', '');
     }
 
     private _drag(e: any): void {
         if (this.isDragging) {
-            if (this._config.debug) {
-                console.log('_drag');
-            }
+            this.debugLog('_drag');
 
             if (window.getSelection) {
                 if (window.getSelection().empty) {
@@ -692,23 +684,14 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
             }
 
             if (gridPos.col !== itemPos.col || gridPos.row !== itemPos.row) {
-                // if (Math.abs(gridPos.col - itemPos.col) > 10 || Math.abs(gridPos.row - itemPos.row) > 10) {
-                if (this._config.debug) {
-                    console.log('_drag', gridPos, itemPos);
-                }
+                this.debugLog('_drag', gridPos, itemPos);
                 this._draggingItem.setGridPosition(gridPos, this._fixToGrid);
                 this._placeholderRef.instance.setGridPosition(gridPos);
 
                 if (['up', 'down', 'left', 'right'].indexOf(this.cascade) >= 0) {
-                    if (Math.abs(gridPos.col - itemPos.col) > 10 || Math.abs(gridPos.row - itemPos.row) > 10) {
-                        if (this._config.debug) {
-                            console.log('_drag fixGridCollision', gridPos, dims);
-                        }
-                        this._fixGridCollisions(gridPos, dims);
-                    }
-                    if (this._config.debug) {
-                        console.log('_drag cascade', gridPos, dims);
-                    }
+                    this.debugLog('_drag fixGridCollision', gridPos, dims);
+                    this._fixGridCollisions(gridPos, dims);
+                    this.debugLog('_drag cascade', gridPos, dims);
                     this._cascadeGrid(gridPos, dims);
                 }
             }
@@ -801,22 +784,8 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
 
             const itemPos = this._draggingItem.getWidgetPosition();
             const itemDragStartPos = this._draggingItem.getWidgetDragStartPosition();
-            if (this._config.debug) {
-                console.log('_dragStop itemPos, dragStartPos', itemPos, itemDragStartPos);
-            }
+            this.debugLog('_dragStop itemPos, dragStartPos', itemPos, itemDragStartPos);
             this._draggingItem.setGridPosition(itemPos);
-            // if (this.allowOverlap) {
-            // 	this._draggingItem.setGridPosition(itemPos);
-            // } else {
-            // 	if (Math.abs(itemPos.row - itemDragStartPos.row) > 4 ) {
-            // 		console.log('_dragStop setGrid itemPos');
-            // 		this._draggingItem.setGridPosition(itemPos);
-            // 	} else {
-            // 		console.log('_dragStop setGrid itemDragStartPos');
-            // 		const newPos: INgWidgetPosition = { col: itemPos.col, row: itemDragStartPos.row };
-            // 		this._draggingItem.setGridPosition(newPos);
-            // 	}
-            // }
             this._addToGrid(this._draggingItem);
 
             this._cascadeGrid();
@@ -1120,12 +1089,9 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
 
                             const newPos: INgWidgetPosition = {col: Math.round(lowest), row: r};
 
-                            // if (lowest !== itemPos.col && this._isWithinBoundsX(newPos, itemDims)) {	// 	if the item is not already on this col move it up
                             if (lowest !== itemPos.col && lowest < itemPos.col && this._isWithinBoundsX(newPos, itemDims)) {	// 	if the item is not already on this col move it up
                                 this._removeFromGrid(item);
-                                if (this._config.debug) {
-                                    console.log('_cascadeGrid called setGridPosition', this.cascade, lowest, itemPos, newPos, itemDims);
-                                }
+                                this.debugLog('_cascadeGrid called setGridPosition', this.cascade, lowest, itemPos, newPos, itemDims);
 
                                 item.setGridPosition(newPos);
 
@@ -1216,12 +1182,6 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
                             const newPos: INgWidgetPosition = {col: c, row: lowest};
 
                             if (lowest !== itemPos.row && this._isWithinBoundsY(newPos, itemDims)) {	// 	if the item is not already on this row move it up
-                                // this._removeFromGrid(item);
-
-                                // item.setGridPosition(newPos);
-
-                                // item.onCascadeEvent();
-                                // this._addToGrid(item);
                                 this._placeholderRef.instance.setGridPosition(newPos);
                             }
 
@@ -1279,13 +1239,6 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
                             const newPos: INgWidgetPosition = {col: lowest, row: r};
 
                             if (lowest !== itemPos.col && lowest < itemPos.col && this._isWithinBoundsX(newPos, itemDims)) {	// 	if the item is not already on this col move it up
-                                // this._removeFromGrid(item);
-                                // console.log('_cascadeGrid called setGridPosition', this.cascade, lowest, itemPos, newPos, itemDims);
-
-                                // item.setGridPosition(newPos);
-
-                                // item.onCascadeEvent();
-                                // this._addToGrid(item);
                                 this._placeholderRef.instance.setGridPosition(newPos);
                             }
 
@@ -1385,9 +1338,6 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     }
 
     private _addToGrid(item: INgWidget): void {
-        // if( (this.isDragging || this.isResizing) && this.allowOverlap) {
-        // 	return;
-        // }
         let pos: INgWidgetPosition = item.getWidgetPosition();
         const dims: INgWidgetSize = item.getSize();
 
@@ -1449,8 +1399,6 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
 
         this._renderer2.setStyle(this._ngEl.nativeElement, 'width', '100%');
         this._renderer2.setStyle(this._ngEl.nativeElement, 'height', (maxRow * (this.rowHeight + this.marginTop + this.marginBottom)) + 'px');
-        // this._renderer.setElementStyle(this._ngEl.nativeElement, 'width', '100%'); // (maxCol * (this.colWidth + this.marginLeft + this.marginRight))+'px');
-        // this._renderer.setElementStyle(this._ngEl.nativeElement, 'height', (maxRow * (this.rowHeight + this.marginTop + this.marginBottom)) + 'px');
     }
 
     private _getMaxRow(): number {
@@ -1528,8 +1476,7 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         const pos: INgWidgetPosition = item.getWidgetPosition();
         const dims: INgWidgetSize = item.getSize();
 
-        const factory = this.componentFactoryResolver.resolveComponentFactory(NgWidgetPlaceholder);
-        const componentRef: ComponentRef<NgWidgetPlaceholder> = item.containerRef.createComponent(factory);
+        const componentRef: ComponentRef<NgWidgetPlaceholder> = item.containerRef.createComponent(NgWidgetPlaceholder);
         this._placeholderRef = componentRef;
         const placeholder: NgWidgetPlaceholder = componentRef.instance;
         placeholder.registerGrid(this);
