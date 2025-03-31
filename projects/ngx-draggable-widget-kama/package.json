@@ -3,8 +3,8 @@
   "license": "MIT",
   "version": "0.0.0",
   "peerDependencies": {
-    "@angular/common": "^15 || ^16",
-    "@angular/core": "^15 || ^16"
+    "@angular/common": "^17",
+    "@angular/core": "^17"
   },
   "scripts": {
     "build": "ng-packagr -p package.json"
