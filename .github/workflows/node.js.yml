@@ -48,7 +48,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - uses: nearform-actions/github-action-copy-files@v1
+      - uses: nearform-actions/github-action-copy-files
         with:
           source: 'README.md'
           destination: './projects/ngx-draggable-widget-kama/'
