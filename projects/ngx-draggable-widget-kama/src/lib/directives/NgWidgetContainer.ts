@@ -446,22 +446,38 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         this.marginLeft = margins.length >= 4 ? Math.max(parseInt(margins[3], 10), 0) : this.marginRight;
     }
 
+    /**
+     * Enables dragging for widgets in the container.
+     */
     public enableDrag(): void {
         this.dragEnable = true;
     }
 
+    /**
+     * Disables dragging for widgets in the container.
+     */
     public disableDrag(): void {
         this.dragEnable = false;
     }
 
+    /**
+     * Enables resizing for widgets in the container.
+     */
     public enableResize(): void {
         this.resizeEnable = true;
     }
 
+    /**
+     * Disables resizing for widgets in the container.
+     */
     public disableResize(): void {
         this.resizeEnable = false;
     }
 
+    /**
+     * Adds a widget to the container.
+     * @param ngItem The widget to add.
+     */
     public addItem(ngItem: INgWidget): void {
         ngItem.setCascadeMode(this.cascade);
 
@@ -481,6 +497,10 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         this._emitOnItemChange();
     }
 
+    /**
+     * Removes a widget from the container.
+     * @param ngItem The widget to remove.
+     */
     public removeItem(ngItem: INgWidget): void {
         this._removeFromGrid(ngItem);
 
@@ -503,6 +523,10 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         this._emitOnItemChange();
     }
 
+    /**
+     * Updates the position and size of a widget in the container.
+     * @param ngWidget The widget to update.
+     */
     public updateItem(ngWidget: INgWidget): void {
         this._removeFromGrid(ngWidget);
         this._addToGrid(ngWidget);
@@ -511,14 +535,24 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         ngWidget.onCascadeEvent();
     }
 
+    /**
+     * Triggers cascading of widgets in the container.
+     */
     public triggerCascade(): void {
         this._cascadeGrid(null, null);
     }
 
+    /**
+     * Triggers resizing of the container.
+     */
     public triggerResize(): void {
         this.resizeEventHandler(null);
     }
 
+    /**
+     * Handles the window resize event.
+     * @param e The resize event.
+     */
     @HostListener('window:resize', ['$event'])
     public resizeEventHandler(e: any): void {
         this._calculateColWidth();
@@ -538,6 +572,10 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         this._updateSize();
     }
 
+    /**
+     * Handles the mouse down or touch start event.
+     * @param e The mouse or touch event.
+     */
     @HostListener('touchstart', ['$event'])
     @HostListener('mousedown', ['$event'])
     public mouseDownEventHandler(e: MouseEvent): void {
@@ -555,6 +593,10 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         }
     }
 
+    /**
+     * Handles the mouse up or touch end event.
+     * @param e The mouse or touch event.
+     */
     @HostListener('mouseup', ['$event'])
     @HostListener('touchend', ['$event'])
     @HostListener('document:mouseup', ['$event'])
@@ -569,6 +611,10 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         }
     }
 
+    /**
+     * Handles the mouse move or touch move event.
+     * @param e The mouse or touch event.
+     */
     @HostListener('mousemove', ['$event'])
     @HostListener('touchmove', ['$event'])
     @HostListener('document:mousemove', ['$event'])
@@ -597,7 +643,9 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         }
     }
 
-    // 	Private methods
+    /**
+     * Updates the positions of widgets after a change in the maximum number of rows or columns.
+     */
     private updatePositionsAfterMaxChange(): void {
         for (const item of this._items) {
             const pos = item.getWidgetPosition();
