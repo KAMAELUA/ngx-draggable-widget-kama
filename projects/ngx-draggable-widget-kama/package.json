@@ -2,6 +2,8 @@
   "name": "ngx-draggable-widget-kama",
   "license": "MIT",
   "version": "0.0.0",
+  "description": "Drag and drop, resize, cascade, overlap 'ngWidgetContainer' and 'ngWidget', structural directive component library",
+  "bugs": "https://github.com/KAMAELUA/ngx-draggable-widget-kama/issues",
   "peerDependencies": {
     "@angular/common": "^17",
     "@angular/core": "^17"
@@ -25,5 +27,13 @@
     "./styling": {
       "sass": "./styles/NgDraggableWidget.scss"
     }
-  }
+  },
+  "keywords": [
+    "angular",
+    "widget",
+    "draggable",
+    "drag",
+    "layout",
+    "web-components"
+  ]
 }
