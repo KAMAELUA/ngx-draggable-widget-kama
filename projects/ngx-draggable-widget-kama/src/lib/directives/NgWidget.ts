@@ -89,6 +89,7 @@ export class NgWidget implements OnInit, OnDestroy, DoCheck, INgWidget {
     private _maxRows = 0;
     private _minRows = 0;
     private _dragStartPosition: INgWidgetPosition = {col: 1, row: 1};
+    private _z_index: number = 0;
 
     // 	[ng-widget] handler
     @Input('ngWidget')
@@ -147,7 +148,8 @@ export class NgWidget implements OnInit, OnDestroy, DoCheck, INgWidget {
 
     public onResizeStartEvent(): void {
         const event: INgWidgetEvent = this.getEventOutput();
-        this._renderer2.setStyle(this._ngEl.nativeElement, 'z-index', String(++this._ngWidgetContainer.zIndex));
+        this._z_index = ++this._ngWidgetContainer.zIndex;
+        this._renderer2.setStyle(this._ngEl.nativeElement, 'z-index', String(this._z_index));
         // this._renderer.setElementStyle(this._ngEl.nativeElement, 'z-index', String(++this._ngWidgetContainer.zIndex));
         this.onResizeStart.emit(event);
         this.onResizeAny.emit(event);
@@ -177,7 +179,8 @@ export class NgWidget implements OnInit, OnDestroy, DoCheck, INgWidget {
 
     public onDragStartEvent(): void {
         const event: INgWidgetEvent = this.getEventOutput();
-        this._renderer2.setStyle(this._ngEl.nativeElement, 'z-index', String(++this._ngWidgetContainer.zIndex));
+        this._z_index = ++this._ngWidgetContainer.zIndex;
+        this._renderer2.setStyle(this._ngEl.nativeElement, 'z-index', String(this._z_index));
         // this._renderer.setElementStyle(this._ngEl.nativeElement, 'z-index', String(++this._ngWidgetContainer.zIndex));
         this.onDragStart.emit(event);
         this.onDragAny.emit(event);
@@ -363,7 +366,7 @@ export class NgWidget implements OnInit, OnDestroy, DoCheck, INgWidget {
     }
 
     public getDimensions(): INgWidgetDimensions {
-        return {'width': this._elemWidth, 'height': this._elemHeight};
+        return {'width': this._elemWidth, 'height': this._elemHeight, 'z_index': this._z_index};
     }
 
     public getSize(): INgWidgetSize {
@@ -584,7 +587,8 @@ export class NgWidget implements OnInit, OnDestroy, DoCheck, INgWidget {
         // this._renderer.setElementClass(this._ngEl.nativeElement, 'moving', true);
         const style: any = window.getComputedStyle(this._ngEl.nativeElement);
         if (this._ngWidgetContainer.autoStyle) {
-            this._renderer2.setStyle(this._ngEl.nativeElement, 'z-index', (parseInt(style.getPropertyValue('z-index'), 10) + 1).toString());
+            this._z_index = (parseInt(style.getPropertyValue('z-index'), 10) + 1);
+            this._renderer2.setStyle(this._ngEl.nativeElement, 'z-index', this._z_index.toString());
             // this._renderer.setElementStyle(this._ngEl.nativeElement, 'z-index', (parseInt(style.getPropertyValue('z-index'), 10) + 1).toString());
         }
     }
@@ -594,7 +598,8 @@ export class NgWidget implements OnInit, OnDestroy, DoCheck, INgWidget {
         // this._renderer.setElementClass(this._ngEl.nativeElement, 'moving', false);
         const style: any = window.getComputedStyle(this._ngEl.nativeElement);
         if (this._ngWidgetContainer.autoStyle) {
-            this._renderer2.setStyle(this._ngEl.nativeElement, 'z-index', (parseInt(style.getPropertyValue('z-index'), 10) - 1).toString());
+            this._z_index = (parseInt(style.getPropertyValue('z-index'), 10) - 1);
+            this._renderer2.setStyle(this._ngEl.nativeElement, 'z-index', this._z_index.toString());
             // this._renderer.setElementStyle(this._ngEl.nativeElement, 'z-index', (parseInt(style.getPropertyValue('z-index'), 10) - 1).toString());
         }
     }
