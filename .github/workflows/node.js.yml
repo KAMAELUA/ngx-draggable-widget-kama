@@ -13,9 +13,15 @@ on:
   pull_request:
     branches:
       - "master"
+      - "[0-9]+.x.x"
+      - "[0-9]+.[0-9]+.x"
+      - "next"
   merge_group:
     branches:
       - "master"
+      - "[0-9]+.x.x"
+      - "[0-9]+.[0-9]+.x"
+      - "next"
 
 jobs:
   quality:
