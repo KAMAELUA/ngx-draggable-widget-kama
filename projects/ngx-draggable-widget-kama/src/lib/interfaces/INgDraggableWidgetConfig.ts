@@ -81,6 +81,7 @@ export interface INgWidgetContainerRawPosition {
 export interface INgWidgetDimensions {
     width: number;
     height: number;
+    z_index: number;
 }
 
 export interface INgWidgetPlaceholder {

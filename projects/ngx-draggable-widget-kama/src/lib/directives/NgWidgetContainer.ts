@@ -1602,17 +1602,23 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     }
 
     private _getItemFromPosition(position: INgWidgetContainerRawPosition): INgWidget {
+        let position_item: INgWidget = null;
+        let max_z_index = Number.NEGATIVE_INFINITY;
+
         for (const item of this._items) {
             const size: INgWidgetDimensions = item.getDimensions();
             const pos: INgWidgetContainerRawPosition = item.getPosition();
 
             if (position.left > (pos.left + this.marginLeft) && position.left < (pos.left + this.marginLeft + size.width) &&
                 position.top > (pos.top + this.marginTop) && position.top < (pos.top + this.marginTop + size.height)) {
-                return item;
+                if(size.z_index > max_z_index) {
+                    max_z_index = size.z_index;
+                    position_item = item;
+                }
             }
         }
 
-        return null;
+        return position_item;
     }
 
     private _createPlaceholder(item: INgWidget): void {
