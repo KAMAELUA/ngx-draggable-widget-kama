@@ -8,7 +8,6 @@ import {
     OnInit,
     OnDestroy,
     DoCheck,
-    ViewContainerRef,
     Output,
     HostListener,
     Renderer2,
@@ -185,7 +184,7 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
     constructor(private _differs: KeyValueDiffers,
                 private _ngEl: ElementRef,
                 private _renderer2: Renderer2,
-                private _containerRef: ViewContainerRef) {
+    ) {
     }
 
     /**
@@ -203,6 +202,14 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
      * Lifecycle hook that is called when the directive is destroyed.
      */
     public ngOnDestroy(): void {
+        this.onDragStart.complete();
+        this.onDrag.complete();
+        this.onDragStop.complete();
+        this.onResizeStart.complete();
+        this.onResize.complete();
+        this.onResizeStop.complete();
+        this.onItemChange.complete();
+
         this.onDragStart.unsubscribe();
         this.onDrag.unsubscribe();
         this.onDragStop.unsubscribe();
@@ -211,13 +218,7 @@ export class NgWidgetContainer implements OnInit, DoCheck, OnDestroy, INgWidgetC
         this.onResizeStop.unsubscribe();
         this.onItemChange.unsubscribe();
 
-        this.onDragStart.complete();
-        this.onDrag.complete();
-        this.onDragStop.complete();
-        this.onResizeStart.complete();
-        this.onResize.complete();
-        this.onResizeStop.complete();
-        this.onItemChange.complete();
+        this._destroyed = true;
     }
 
     /**
